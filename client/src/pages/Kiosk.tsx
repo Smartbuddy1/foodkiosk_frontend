@@ -48,6 +48,7 @@ type CartLine = {
 };
 
 const removeOptions = ["lettuce", "onion", "pickle"];
+const t = (text: string) => getTranslation("English", text);
 
 function makeId() {
   return "line-" + Math.random().toString(16).slice(2) + Date.now();
@@ -996,7 +997,7 @@ export default function Kiosk() {
                 <span>
                   {item.quantity} x {item.name}
                 </span>
-                <strong>{formatRupees(item.total)}</strong>
+                <strong>{formatRupees(item.quantity * item.unitPrice)}</strong>
               </div>
             ))}
             <div className="mt-4 flex justify-between text-2xl font-bold">

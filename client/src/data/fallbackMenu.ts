@@ -5,17 +5,18 @@ const img = (id: string) =>
 const localPhoto = (fileName: string) => `/images/photos/${fileName}`;
 
 export const fallbackCategories: CategoryDto[] = [
-  { id: 1, name: "Burgers", displayOrder: 1, isActive: true },
-  { id: 2, name: "Wraps", displayOrder: 2, isActive: true },
-  { id: 3, name: "Sides", displayOrder: 3, isActive: true },
-  { id: 4, name: "Drinks", displayOrder: 4, isActive: true },
-  { id: 5, name: "Combos", displayOrder: 5, isActive: true },
-  { id: 6, name: "Desserts", displayOrder: 6, isActive: true },
+  { restaurantId: "1", id: 1, name: "Burgers", displayOrder: 1, isActive: true },
+  { restaurantId: "1", id: 2, name: "Wraps", displayOrder: 2, isActive: true },
+  { restaurantId: "1", id: 3, name: "Sides", displayOrder: 3, isActive: true },
+  { restaurantId: "1", id: 4, name: "Drinks", displayOrder: 4, isActive: true },
+  { restaurantId: "1", id: 5, name: "Combos", displayOrder: 5, isActive: true },
+  { restaurantId: "1", id: 6, name: "Desserts", displayOrder: 6, isActive: true },
 ];
 
 export const fallbackItems: MenuItemDto[] = [
   {
     id: 1,
+    restaurantId: "1",
     categoryId: 1,
     category: fallbackCategories[0],
     name: "BiteCraft Signature Beast",
@@ -39,6 +40,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 2,
+    restaurantId: "1",
     categoryId: 1,
     category: fallbackCategories[0],
     name: "Truffle Mushroom & Veg Craft",
@@ -61,6 +63,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 3,
+    restaurantId: "1",
     categoryId: 2,
     category: fallbackCategories[1],
     name: "Smoked Paneer & Pepper Craft Wrap",
@@ -82,6 +85,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 4,
+    restaurantId: "1",
     categoryId: 2,
     category: fallbackCategories[1],
     name: "Fiery Chipotle Chicken Wrap",
@@ -103,6 +107,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 5,
+    restaurantId: "1",
     categoryId: 3,
     category: fallbackCategories[2],
     name: "Rustic Sea Salt Fries",
@@ -125,6 +130,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 6,
+    restaurantId: "1",
     categoryId: 4,
     category: fallbackCategories[3],
     name: "House Brewed Cola",
@@ -144,6 +150,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 7,
+    restaurantId: "1",
     categoryId: 5,
     category: fallbackCategories[4],
     name: "BiteCraft Signature Combo",
@@ -165,6 +172,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 8,
+    restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
     name: "Belgian Chocolate Fudge Velvet",
@@ -186,6 +194,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 9,
+    restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
     name: "Dairy Don Hard Scoops",
@@ -207,6 +216,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 10,
+    restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
     name: "Dairy Don Softies",
@@ -228,6 +238,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 11,
+    restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
     name: "Dairy Don Sundae",
@@ -249,6 +260,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 12,
+    restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
     name: "Dairy Don Thickshake",
@@ -270,6 +282,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 13,
+    restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
     name: "Dairy Don Mastani",
@@ -291,6 +304,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 14,
+    restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
     name: "Dairy Don Sugar Less Scoops",
@@ -312,6 +326,7 @@ export const fallbackItems: MenuItemDto[] = [
   },
   {
     id: 15,
+    restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
     name: "Dairy Don Chocolate Candy Bar",
