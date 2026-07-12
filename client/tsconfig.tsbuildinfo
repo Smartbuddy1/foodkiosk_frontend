@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/data/fallbackmenu.ts","./src/hooks/useidlereset.ts","./src/lib/api.ts","./src/lib/format.ts","./src/pages/admin.tsx","./src/pages/kds.tsx","./src/pages/kiosk.tsx","./src/pages/login.tsx","./src/pages/superadmin.tsx","./src/pages/tokendisplay.tsx","./src/utils/translations.ts"],"errors":true,"version":"5.9.3"}

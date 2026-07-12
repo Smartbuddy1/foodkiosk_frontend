@@ -1,0 +1,209 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  STAFF
+  KITCHEN
+  CASHIER
+  MANAGER
+}
+
+enum OrderType {
+  DINE_IN
+  TAKEAWAY
+}
+
+enum OrderStatus {
+  NEW
+  PREPARING
+  READY
+  COLLECTED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CARD
+  UPI
+  CASH
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  PENDING_CASH
+}
+
+enum DiscountType {
+  FLAT
+  PERCENTAGE
+}
+
+model Restaurant {
+  id        String      @id @default(uuid())
+  name      String
+  logoUrl   String?     @map("logo_url")
+  isActive  Boolean     @default(true) @map("is_active")
+  createdAt DateTime    @default(now()) @map("created_at")
+
+  users       User[]
+  categories  Category[]
+  menuItems   MenuItem[]
+  orders      Order[]
+  promoCodes  PromoCode[]
+
+  @@map("restaurants")
+}
+
+model User {
+  id           Int                @id @default(autoincrement())
+  restaurantId String?            @map("restaurant_id")
+  restaurant   Restaurant?        @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  name         String
+  email        String             @unique
+  passwordHash String             @map("password_hash")
+  role         Role
+  createdAt    DateTime           @default(now()) @map("created_at")
+  activityLogs StaffActivityLog[]
+
+  @@index([restaurantId])
+  @@map("users")
+}
+
+model Category {
+  id           Int        @id @default(autoincrement())
+  restaurantId String     @map("restaurant_id")
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  name         String
+  displayOrder Int        @default(0) @map("display_order")
+  isActive     Boolean    @default(true) @map("is_active")
+  items        MenuItem[]
+
+  @@unique([restaurantId, name])
+  @@map("categories")
+}
+
+model MenuItem {
+  id           Int           @id @default(autoincrement())
+  restaurantId String        @map("restaurant_id")
+  restaurant   Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  categoryId   Int           @map("category_id")
+  category     Category      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  name         String
+  description  String
+  price        Decimal
+  imageUrl     String        @map("image_url")
+  isVeg        Boolean       @default(true) @map("is_veg")
+  isVegan      Boolean       @default(false) @map("is_vegan")
+  isAvailable  Boolean       @default(true) @map("is_available")
+  allergens    String        @default("")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  variants     ItemVariant[]
+  addons       ItemAddon[]
+  orderItems   OrderItem[]
+
+  @@index([restaurantId])
+  @@index([categoryId])
+  @@map("menu_items")
+}
+
+model ItemVariant {
+  id         Int      @id @default(autoincrement())
+  itemId     Int      @map("item_id")
+  item       MenuItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  label      String
+  priceDelta Decimal  @default(0) @map("price_delta")
+
+  @@map("item_variants")
+}
+
+model ItemAddon {
+  id        Int      @id @default(autoincrement())
+  itemId    Int      @map("item_id")
+  item      MenuItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  label     String
+  price     Decimal  @default(0)
+  isDefault Boolean  @default(false) @map("is_default")
+
+  @@map("item_addons")
+}
+
+model Order {
+  id                Int           @id @default(autoincrement())
+  restaurantId      String        @map("restaurant_id")
+  restaurant        Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  tokenNumber       Int           @map("token_number")
+  orderType         OrderType     @map("order_type")
+  status            OrderStatus   @default(NEW)
+  subtotal          Decimal
+  tax               Decimal
+  packagingCharge   Decimal       @default(0) @map("packaging_charge")
+  discount          Decimal       @default(0)
+  total             Decimal
+  paymentMethod     PaymentMethod @map("payment_method")
+  paymentStatus     PaymentStatus @default(PENDING) @map("payment_status")
+  notes             String?
+  razorpayOrderId   String?       @map("razorpay_order_id")
+  razorpayPaymentId String?       @map("razorpay_payment_id")
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
+  items             OrderItem[]
+
+  @@index([restaurantId])
+  @@index([createdAt])
+  @@index([status])
+  @@map("orders")
+}
+
+model OrderItem {
+  id             Int      @id @default(autoincrement())
+  orderId        Int      @map("order_id")
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId     Int      @map("menu_item_id")
+  menuItem       MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Restrict)
+  variant        String?
+  quantity       Int
+  unitPrice      Decimal  @map("unit_price")
+  customisations Json
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+model PromoCode {
+  id            Int          @id @default(autoincrement())
+  restaurantId  String       @map("restaurant_id")
+  restaurant    Restaurant   @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  code          String
+  discountType  DiscountType @map("discount_type")
+  discountValue Decimal      @map("discount_value")
+  minOrder      Decimal      @default(0) @map("min_order")
+  maxUses       Int          @default(0) @map("max_uses")
+  usedCount     Int          @default(0) @map("used_count")
+  validFrom     DateTime     @map("valid_from")
+  validTo       DateTime     @map("valid_to")
+
+  @@unique([restaurantId, code])
+  @@map("promo_codes")
+}
+
+model StaffActivityLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String
+  meta      Json
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@map("staff_activity_log")
+}

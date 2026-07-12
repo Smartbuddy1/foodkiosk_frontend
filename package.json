@@ -1,0 +1,33 @@
+{
+  "name": "food-kiosk-system",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Production-ready self-service food kiosk monorepo with kiosk UI, KDS, admin panel, Express API, PostgreSQL, Redis, and Docker.",
+  "workspaces": [
+    "client",
+    "server",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "npm -w @food/shared run build && concurrently \"npm -w server run dev\" \"npm -w client run dev\"",
+    "dev:client": "npm -w client run dev",
+    "dev:server": "npm -w server run dev",
+    "build": "npm -w @food/shared run build && npm -w server run build && npm -w client run build",
+    "typecheck": "npm -w @food/shared run typecheck && npm -w server run typecheck && npm -w client run typecheck",
+    "db:migrate": "npm -w server run prisma:migrate",
+    "db:seed": "npm -w server run seed",
+    "format": "prettier --write \"**/*.{ts,tsx,js,cjs,json,css,md,yml,yaml}\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.4.2",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "dependencies": {
+    "lucide-react": "^1.21.0"
+  }
+}
