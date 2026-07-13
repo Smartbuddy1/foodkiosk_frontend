@@ -13,7 +13,7 @@
     "dev:client": "npm -w client run dev",
     "dev:server": "npm -w server run dev",
     "build": "npm -w @food/shared run build && npm -w server run build && npm -w client run build",
-    "build:server": "npm -w @food/shared run build && npm -w server run build",
+    "build:server": "npm -w @food/shared run build && npm -w server run prisma:generate && npm -w server run build",
     "start": "npm -w server run start",
     "typecheck": "npm -w @food/shared run typecheck && npm -w server run typecheck && npm -w client run typecheck",
     "db:migrate": "npm -w server run prisma:migrate",
