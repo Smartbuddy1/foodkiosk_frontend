@@ -10,6 +10,8 @@
     "start": "node dist/index.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push --accept-data-loss",
+    "setup:production": "npm run prisma:push && node dist/scripts/ensureData.js",
     "prisma:migrate": "prisma migrate dev",
     "seed": "tsx prisma/seed.ts"
   },
