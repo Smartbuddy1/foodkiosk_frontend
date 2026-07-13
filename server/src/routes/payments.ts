@@ -56,6 +56,13 @@ paymentsRouter.post(
 paymentsRouter.post(
   "/cash",
   asyncHandler(async (req, res) => {
+    if (!req.body.restaurantId) {
+      const { prisma } = await import("../config/prisma.js");
+      const defaultRestaurant = await prisma.restaurant.findFirst({
+        where: { isActive: true }
+      });
+      if (defaultRestaurant) req.body.restaurantId = defaultRestaurant.id;
+    }
     const input = placeOrderSchema.parse({ ...req.body, paymentMethod: "cash" });
     const order = await createOrder(input.restaurantId, input, { paymentStatus: "pending_cash" });
     broadcastNewOrder(order);

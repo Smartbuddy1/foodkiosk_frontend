@@ -31,6 +31,7 @@ type Step =
   | "menu"
   | "review"
   | "payment"
+  | "placingOrder"
   | "receipt";
 type SpiceLevel = "mild" | "medium" | "hot";
 
@@ -42,12 +43,28 @@ type CartLine = {
   variantLabel?: string;
   variantDelta: number;
   addons: Array<{ id: number; label: string; price: number }>;
+  flavor?: string;
   removeIngredients: string[];
   spiceLevel: SpiceLevel;
   specialInstructions?: string;
 };
 
 const removeOptions = ["lettuce", "onion", "pickle"];
+const dessertFlavors = [
+  "Vanilla",
+  "Chocolate",
+  "Strawberry",
+  "Mango",
+  "Butterscotch",
+  "Pista",
+  "Black Currant",
+  "Kesar Pista",
+];
+const upiQrImage =
+  import.meta.env.VITE_UPI_QR_IMAGE_URL ??
+  "/images/payment/dairy-don-upi-qr.png";
+const upiPayeeName =
+  import.meta.env.VITE_UPI_PAYEE_NAME ?? "Dairy Don The Real Ice Cream";
 const t = (text: string) => getTranslation("English", text);
 
 function makeId() {
@@ -64,6 +81,12 @@ function getLineUnitPrice(line: CartLine) {
 
 function cartQuantity(cart: CartLine[]) {
   return cart.reduce((sum, line) => sum + line.quantity, 0);
+}
+
+function buildInstructions(line: CartLine) {
+  return [line.flavor ? `Flavor: ${line.flavor}` : "", line.specialInstructions]
+    .filter(Boolean)
+    .join(" | ");
 }
 
 function toOrderInput(
@@ -83,7 +106,7 @@ function toOrderInput(
       addonIds: line.addons.map((addon) => addon.id),
       removeIngredients: line.removeIngredients,
       spiceLevel: line.spiceLevel,
-      specialInstructions: line.specialInstructions,
+      specialInstructions: buildInstructions(line) || undefined,
     })),
   };
 }
@@ -173,6 +196,7 @@ function ItemDetailModal({
     (variant?.priceDelta ?? 0) +
     addons.reduce((sum, addon) => sum + addon.price, 0);
   const isDessert = item.category?.name.toLowerCase() === "desserts";
+  const [flavor, setFlavor] = useState(dessertFlavors[0]);
 
   return (
     <div className="fixed inset-0 z-40 flex items-end bg-black/40 p-3 sm:items-center sm:justify-center">
@@ -302,6 +326,27 @@ function ItemDetailModal({
               </>
             )}
 
+            {isDessert && (
+              <section className="mt-5">
+                <h3 className="mb-2 text-xl font-bold">Flavor</h3>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {dessertFlavors.map((option) => (
+                    <button
+                      key={option}
+                      className={`rounded-md border px-3 py-3 font-bold ${
+                        flavor === option
+                          ? "border-ember bg-red-50"
+                          : "border-amber-200 bg-white"
+                      }`}
+                      onClick={() => setFlavor(option)}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
+
             <textarea
               className="mt-5 min-h-24 w-full rounded-md border border-amber-200 p-3 outline-none focus:border-ember"
               placeholder="Special instructions"
@@ -348,6 +393,7 @@ function ItemDetailModal({
                   variantLabel: variant?.label,
                   variantDelta: variant?.priceDelta ?? 0,
                   addons,
+                  flavor: isDessert ? flavor : undefined,
                   removeIngredients: isDessert ? [] : removeIngredients,
                   spiceLevel: isDessert ? "medium" : spiceLevel,
                   specialInstructions: specialInstructions.trim() || undefined,
@@ -415,6 +461,11 @@ function CartDrawer({
                       ? `+ ${line.addons.map((a) => a.label).join(", ")}`
                       : ""}
                   </p>
+                  {line.flavor && (
+                    <p className="text-sm font-bold text-ember">
+                      Flavor: {line.flavor}
+                    </p>
+                  )}
                   <p className="font-bold">
                     {formatRupees(getLineUnitPrice(line) * line.quantity)}
                   </p>
@@ -469,25 +520,6 @@ function CartDrawer({
           Review Order
         </button>
       </aside>
-    </div>
-  );
-}
-
-function QrPattern() {
-  return (
-    <div className="grid h-56 w-56 grid-cols-9 gap-1 rounded-lg bg-white p-3 shadow-inner">
-      {Array.from({ length: 81 }, (_, index) => (
-        <span
-          key={index}
-          className={`rounded-sm ${
-            index % 2 === 0 ||
-            index % 7 === 0 ||
-            [0, 1, 2, 9, 18, 60, 69, 78, 70, 71, 72].includes(index)
-              ? "bg-ink"
-              : "bg-amber-100"
-          }`}
-        />
-      ))}
     </div>
   );
 }
@@ -622,7 +654,8 @@ export default function Kiosk() {
           ? await withTimeout(api.cashOrder(payload), 15_000)
           : await withTimeout(api.placeOrder(payload), 15_000);
       setCreatedOrder(response.order);
-      setStep("receipt");
+      setStep("placingOrder");
+      window.setTimeout(() => setStep("receipt"), 2600);
     } catch (error) {
       setPaymentError(
         error instanceof Error ? error.message : "Payment failed",
@@ -874,6 +907,11 @@ export default function Kiosk() {
                           {line.addons.map((a) => a.label).join(", ")}
                         </p>
                       )}
+                      {line.flavor && (
+                        <p className="text-sm sm:text-base font-bold text-ember">
+                          Flavor: {line.flavor}
+                        </p>
+                      )}
                       {line.removeIngredients.length > 0 && (
                         <p className="text-sm sm:text-base text-steel">
                           {t("Remove")} {line.removeIngredients.join(", ")}
@@ -950,8 +988,18 @@ export default function Kiosk() {
                 );
               })}
               {paymentMethod === "upi" && (
-                <div className="col-span-full flex justify-center rounded-lg border border-amber-200 bg-white p-6">
-                  <QrPattern />
+                <div className="col-span-full flex flex-col items-center rounded-lg border border-amber-200 bg-white p-6 text-center">
+                  <div className="rounded-lg border border-amber-100 bg-white p-3 shadow-inner">
+                    <img
+                      className="h-64 w-64 object-contain"
+                      src={upiQrImage}
+                      alt={`UPI QR code for ${upiPayeeName}`}
+                    />
+                  </div>
+                  <p className="mt-4 text-lg font-bold">{upiPayeeName}</p>
+                  <p className="text-sm font-bold text-steel">
+                    Scan and pay {formatRupees(totals.total)}
+                  </p>
                 </div>
               )}
             </div>
@@ -976,6 +1024,32 @@ export default function Kiosk() {
                   : `${t("Pay")} ${formatRupees(totals.total)}`}
               </button>
             </aside>
+          </div>
+        </section>
+      )}
+
+      {step === "placingOrder" && createdOrder && (
+        <section className="page-transition mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-4 py-8 text-center">
+          <div className="relative mb-8 flex h-56 w-56 items-center justify-center rounded-full bg-white shadow-kiosk">
+            <div className="payment-success-ring absolute inset-5 rounded-full border-4 border-amber-100" />
+            <div className="payment-success-check flex h-28 w-28 items-center justify-center rounded-full bg-leaf text-white shadow-lg">
+              <Check size={58} strokeWidth={4} />
+            </div>
+            <span className="food-bubble food-bubble-one" />
+            <span className="food-bubble food-bubble-two" />
+            <span className="food-bubble food-bubble-three" />
+          </div>
+          <p className="text-xl font-bold text-steel">Payment received</p>
+          <h1 className="mt-2 text-4xl font-bold sm:text-6xl">
+            Placing your order
+          </h1>
+          <p className="mt-4 max-w-xl text-xl text-steel">
+            Sending it to the kitchen. Your token is almost ready.
+          </p>
+          <div className="mt-8 flex w-full max-w-md items-center gap-2">
+            <span className="order-progress-dot" />
+            <span className="order-progress-dot order-progress-dot-delay-1" />
+            <span className="order-progress-dot order-progress-dot-delay-2" />
           </div>
         </section>
       )}
