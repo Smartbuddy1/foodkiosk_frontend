@@ -1099,7 +1099,7 @@ function DashboardView({
 
       <aside className="space-y-4">
         <section className="overflow-hidden rounded-[7px] bg-[#ff922b] p-4 text-white">
-          <div className="grid min-w-0 grid-cols-1 gap-4 min-[1320px]:grid-cols-[minmax(0,1fr)_minmax(150px,180px)]">
+          <div className="grid min-w-0 grid-cols-1 gap-4">
             <div className="min-w-0">
               <p className="text-xs font-semibold text-white/80">
                 Total earning
@@ -1108,7 +1108,7 @@ function DashboardView({
                 <span className="shrink-0 text-[26px] font-black leading-none">
                   ₹
                 </span>
-                <p className="min-w-0 whitespace-nowrap text-[clamp(24px,2.1vw,30px)] font-black leading-none">
+                <p className="min-w-0 whitespace-nowrap text-[clamp(26px,2.4vw,34px)] font-black leading-none">
                   {Math.round(displayTotalEarning || displayTodayRevenue).toLocaleString(
                     "en-IN",
                   )}
