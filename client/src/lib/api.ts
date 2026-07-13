@@ -9,10 +9,15 @@ import type {
   Role,
 } from "@food/shared";
 
+const localApiUrl = "http://localhost:4000/api";
+const localSocketUrl = "http://localhost:4000";
+
 export const API_URL =
-  import.meta.env.VITE_API_URL ?? "http://localhost:4000/api";
+  import.meta.env.VITE_API_URL ??
+  (import.meta.env.PROD ? "/api" : localApiUrl);
 export const SOCKET_URL =
-  import.meta.env.VITE_SOCKET_URL ?? "http://localhost:4000";
+  import.meta.env.VITE_SOCKET_URL ??
+  (import.meta.env.PROD ? window.location.origin : localSocketUrl);
 
 export type AuthUser = {
   id: number;

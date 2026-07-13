@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api, getStoredToken } from "../lib/api";
+import { API_URL, getStoredToken } from "../lib/api";
 
 type Restaurant = {
   id: string;
@@ -24,7 +24,7 @@ export default function SuperAdmin() {
     try {
       const token = getStoredToken();
       if (!token) return;
-      const res = await fetch(import.meta.env.VITE_API_URL + "/super-admin/restaurants", {
+      const res = await fetch(API_URL + "/super-admin/restaurants", {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -44,7 +44,7 @@ export default function SuperAdmin() {
     e.preventDefault();
     try {
       const token = getStoredToken();
-      const res = await fetch(import.meta.env.VITE_API_URL + "/super-admin/restaurants", {
+      const res = await fetch(API_URL + "/super-admin/restaurants", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export default function SuperAdmin() {
   const toggleStatus = async (id: string, currentStatus: boolean) => {
     try {
       const token = getStoredToken();
-      await fetch(import.meta.env.VITE_API_URL + "/super-admin/restaurants/" + id, {
+      await fetch(API_URL + "/super-admin/restaurants/" + id, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
