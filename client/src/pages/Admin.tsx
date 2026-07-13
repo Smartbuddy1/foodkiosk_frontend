@@ -104,6 +104,95 @@ const statusOptions: OrderStatus[] = [
   "collected",
   "cancelled",
 ];
+const demoSalesData = [
+  { month: "Jan", sales: 18500 },
+  { month: "Feb", sales: 22400 },
+  { month: "Mar", sales: 27800 },
+  { month: "Apr", sales: 24600 },
+  { month: "May", sales: 31500 },
+  { month: "Jun", sales: 36800 },
+  { month: "Jul", sales: 42100 },
+  { month: "Aug", sales: 39700 },
+  { month: "Sep", sales: 45200 },
+  { month: "Oct", sales: 48600 },
+  { month: "Nov", sales: 52300 },
+  { month: "Dec", sales: 57800 },
+];
+const demoEarningCategories = [
+  { day: "Sun", Food: 5200, Drink: 2800, Desert: 8400 },
+  { day: "Mon", Food: 3800, Drink: 2100, Desert: 6900 },
+  { day: "Tue", Food: 4200, Drink: 2400, Desert: 7600 },
+  { day: "Wed", Food: 4600, Drink: 2600, Desert: 8100 },
+  { day: "Thu", Food: 5100, Drink: 3000, Desert: 9000 },
+  { day: "Fri", Food: 6400, Drink: 3900, Desert: 11200 },
+  { day: "Sat", Food: 7100, Drink: 4200, Desert: 12800 },
+];
+const demoSparkSales = [
+  { label: 0, value: 5200 },
+  { label: 1, value: 6400 },
+  { label: 2, value: 5900 },
+  { label: 3, value: 7200 },
+  { label: 4, value: 8400 },
+  { label: 5, value: 9100 },
+  { label: 6, value: 10800 },
+  { label: 7, value: 12400 },
+];
+const demoSparkOrders = [
+  { label: 0, value: 34 },
+  { label: 1, value: 42 },
+  { label: 2, value: 39 },
+  { label: 3, value: 48 },
+  { label: 4, value: 56 },
+  { label: 5, value: 63 },
+  { label: 6, value: 71 },
+  { label: 7, value: 78 },
+];
+const demoSpecialties = [
+  {
+    name: "Dairy Don Sundae",
+    imageUrl: "/images/photos/sundae-photo.jpg",
+    quantity: 142,
+    revenue: 18318,
+  },
+  {
+    name: "Dairy Don Thickshake",
+    imageUrl: "/images/photos/thickshakes-photo.png",
+    quantity: 118,
+    revenue: 17582,
+  },
+  {
+    name: "Dairy Don Hard Scoops",
+    imageUrl: "/images/photos/hard-scoops-photo.png",
+    quantity: 205,
+    revenue: 18245,
+  },
+];
+const demoTransactions = [
+  {
+    name: "Dairy Don Sundae",
+    imageUrl: "/images/photos/sundae-photo.jpg",
+    time: "12:45 PM",
+    total: 258,
+  },
+  {
+    name: "Dairy Don Thickshake",
+    imageUrl: "/images/photos/thickshakes-photo.png",
+    time: "12:18 PM",
+    total: 298,
+  },
+  {
+    name: "Dairy Don Hard Scoops",
+    imageUrl: "/images/photos/hard-scoops-photo.png",
+    time: "11:52 AM",
+    total: 178,
+  },
+  {
+    name: "Dairy Don Mastani",
+    imageUrl: "/images/photos/mastani-photo.png",
+    time: "11:30 AM",
+    total: 318,
+  },
+];
 
 const navItems: Array<{
   view: AdminView;
@@ -276,6 +365,7 @@ function SalesCard({
   positive,
   orders,
   metric,
+  sparkData,
 }: {
   title: string;
   value: string | number;
@@ -283,6 +373,7 @@ function SalesCard({
   positive: boolean;
   orders: OrderDto[];
   metric: "sales" | "orders";
+  sparkData?: Array<{ label: number; value: number }>;
 }) {
   return (
     <Panel className="p-5">
@@ -301,7 +392,7 @@ function SalesCard({
       </div>
       <div className="mt-1 h-16">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={sparkline(orders, metric)}>
+          <LineChart data={sparkData ?? sparkline(orders, metric)}>
             <Line
               type="monotone"
               dataKey="value"
@@ -807,6 +898,21 @@ function DashboardView({
   }>;
   setActiveView: (view: AdminView) => void;
 }) {
+  const hasOrders = orders.length > 0;
+  const displaySalesData = hasOrders ? salesData : demoSalesData;
+  const displayEarningCategories = hasOrders
+    ? earningCategories
+    : demoEarningCategories;
+  const displayTotalEarning = hasOrders ? totalEarning : 425800;
+  const displayTodayRevenue = hasOrders ? todayRevenue : 12400;
+  const displayOrderCount = hasOrders ? orders.length : 487;
+  const displaySalesChange = hasOrders ? salesChange : 18.6;
+  const displayOrderChange = hasOrders ? orderChange : 12.4;
+  const displayTopSpecialties = topSpecialties.length
+    ? topSpecialties
+    : demoSpecialties;
+  const salesSparkData = hasOrders ? undefined : demoSparkSales;
+  const orderSparkData = hasOrders ? undefined : demoSparkOrders;
   const recentOrders = orders.slice(0, 8);
   return (
     <div className="grid gap-4 xl:grid-cols-[1fr_340px]">
@@ -823,7 +929,7 @@ function DashboardView({
           <div className="h-[255px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
-                data={salesData}
+                data={displaySalesData}
                 margin={{ top: 14, right: 12, bottom: 0, left: 0 }}
               >
                 <CartesianGrid stroke="#e8e8e8" vertical={false} />
@@ -866,7 +972,7 @@ function DashboardView({
             />
             <div className="h-[188px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={earningCategories} barCategoryGap={16}>
+                <BarChart data={displayEarningCategories} barCategoryGap={16}>
                   <CartesianGrid stroke="#ececec" vertical={false} />
                   <XAxis
                     dataKey="day"
@@ -905,19 +1011,21 @@ function DashboardView({
           <div className="grid gap-4">
             <SalesCard
               title="Total Sales"
-              value={compactCurrency(totalEarning || todayRevenue)}
-              change={salesChange}
+              value={compactCurrency(displayTotalEarning || displayTodayRevenue)}
+              change={displaySalesChange}
               positive
               orders={orders}
               metric="sales"
+              sparkData={salesSparkData}
             />
             <SalesCard
               title="Total Orders"
-              value={orders.length || todayOrders.length}
-              change={orderChange}
+              value={displayOrderCount || todayOrders.length}
+              change={displayOrderChange}
               positive={false}
               orders={orders}
               metric="orders"
+              sparkData={orderSparkData}
             />
           </div>
         </div>
@@ -926,7 +1034,7 @@ function DashboardView({
           <Panel className="p-4">
             <h3 className="text-[17px] font-black">Specialties Sales</h3>
             <div className="mt-4 divide-y divide-[#eeeeee]">
-              {topSpecialties.slice(0, 3).map((item, index) => (
+              {displayTopSpecialties.slice(0, 3).map((item, index) => (
                 <div
                   key={item.name}
                   className="grid grid-cols-[58px_1fr_82px_150px] items-center gap-4 py-4"
@@ -965,7 +1073,7 @@ function DashboardView({
           <Panel className="p-4">
             <h3 className="text-[17px] font-black">Specialties Sales</h3>
             <div className="mt-7 grid grid-cols-3 gap-4">
-              {topSpecialties.slice(0, 3).map((item, index) => (
+              {displayTopSpecialties.slice(0, 3).map((item, index) => (
                 <div key={item.name} className="text-center">
                   <div
                     className="mx-auto flex h-[118px] w-[118px] items-center justify-center rounded-full"
@@ -999,7 +1107,7 @@ function DashboardView({
               <div className="mt-2 flex items-start gap-2">
                 <span className="text-[28px] font-black leading-none">₹</span>
                 <p className="text-[30px] font-black leading-none">
-                  {Math.round(totalEarning || todayRevenue).toLocaleString(
+                  {Math.round(displayTotalEarning || displayTodayRevenue).toLocaleString(
                     "en-IN",
                   )}
                 </p>
@@ -1015,7 +1123,7 @@ function DashboardView({
               <p className="text-xs font-black">Total Profit</p>
               <div className="mx-auto mt-3 h-16 w-32">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={sparkline(orders, "sales")}>
+                  <LineChart data={salesSparkData ?? sparkline(orders, "sales")}>
                     <Line
                       type="monotone"
                       dataKey="value"
@@ -1027,12 +1135,16 @@ function DashboardView({
                 </ResponsiveContainer>
               </div>
               <span className="mt-2 inline-block rounded-[4px] border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-500">
-                Up {Math.abs(salesChange).toFixed(1)} %
+                Up {Math.abs(displaySalesChange).toFixed(1)} %
               </span>
             </div>
           </div>
         </section>
-        <LastTransaction orders={orders.slice(0, 8)} menuItems={menuItems} />
+        <LastTransaction
+          orders={orders.slice(0, 8)}
+          menuItems={menuItems}
+          demo={!hasOrders}
+        />
       </aside>
     </div>
   );
@@ -1041,9 +1153,11 @@ function DashboardView({
 function LastTransaction({
   orders,
   menuItems,
+  demo,
 }: {
   orders: OrderDto[];
   menuItems: MenuItemDto[];
+  demo?: boolean;
 }) {
   return (
     <Panel className="p-4">
@@ -1086,6 +1200,30 @@ function LastTransaction({
               </div>
             );
           })
+        ) : demo ? (
+          demoTransactions.map((transaction) => (
+            <div
+              key={`${transaction.name}-${transaction.time}`}
+              className="grid grid-cols-[48px_1fr_auto] items-center gap-3 border-b border-[#eeeeee] py-3"
+            >
+              <img
+                className="h-11 w-11 rounded-full object-cover ring-2 ring-[#eeeeee]"
+                src={transaction.imageUrl}
+                alt={transaction.name}
+              />
+              <div className="min-w-0">
+                <p className="line-clamp-1 text-sm font-black">
+                  {transaction.name}
+                </p>
+                <p className="text-xs font-semibold text-[#8d8d8d]">
+                  {transaction.time}
+                </p>
+              </div>
+              <p className="text-sm font-black">
+                {compactCurrency(transaction.total)}
+              </p>
+            </div>
+          ))
         ) : (
           <EmptyState
             title="No transactions yet"
