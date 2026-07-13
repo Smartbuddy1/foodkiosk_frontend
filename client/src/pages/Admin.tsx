@@ -25,8 +25,6 @@ import {
   Eye,
   EyeOff,
   Grid2X2,
-  LockKeyhole,
-  MapPin,
   Megaphone,
   MoreVertical,
   PackagePlus,
@@ -594,13 +592,20 @@ export default function Admin() {
       )}
       <div className="flex h-full w-full overflow-hidden bg-[#f7f7f9]">
         <aside className="hidden h-full w-[220px] shrink-0 overflow-y-auto bg-white lg:block">
-          <div className="flex h-[64px] items-center gap-3 border-b border-[#eeeeee] px-5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ff922b] text-white">
-              <MapPin size={23} fill="white" />
+          <div className="flex h-[72px] items-center gap-3 border-b border-[#eeeeee] px-5">
+            <img
+              className="h-12 w-12 shrink-0 rounded-full object-contain"
+              src="/images/brand/dairy-don-logo.png"
+              alt="Dairy Don"
+            />
+            <div className="min-w-0">
+              <h1 className="text-[18px] font-black leading-5 tracking-tight text-[#202020]">
+                Dairy Don
+              </h1>
+              <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#8d8d8d]">
+                Real Ice Cream
+              </p>
             </div>
-            <h1 className="text-[24px] font-black tracking-tight text-[#202020]">
-              FOODPOINT
-            </h1>
           </div>
 
           <nav className="space-y-3 px-4 py-5">
@@ -625,20 +630,15 @@ export default function Admin() {
           </nav>
 
           <div className="mx-4 mt-14 rounded-[10px] bg-[#ff922b] p-3 text-white">
-            <LockKeyhole size={18} />
-            <p className="mt-3 text-[13px] font-black">Unlock New Features</p>
+            <img
+              className="h-14 w-14 rounded-full bg-white object-contain p-1"
+              src="/images/brand/dairy-don-logo.png"
+              alt="Dairy Don"
+            />
+            <p className="mt-3 text-[13px] font-black">Dairy Don Admin</p>
             <p className="mt-1 text-[10px] font-medium leading-4 text-white/85">
-              & Maximize Your Food Delivery Management Efficiency
+              Manage products, orders, offers, and staff from one dashboard.
             </p>
-            <div className="mt-4 flex items-center justify-between">
-              <span className="text-[10px] font-bold">What's New?</span>
-              <button
-                className="min-h-0 rounded-[4px] bg-white px-3 py-1 text-[10px] font-black text-[#ff922b]"
-                onClick={() => setActiveView("offers")}
-              >
-                Upgrade
-              </button>
-            </div>
           </div>
         </aside>
 

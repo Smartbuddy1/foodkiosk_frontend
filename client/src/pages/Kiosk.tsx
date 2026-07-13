@@ -562,11 +562,17 @@ export default function Kiosk() {
   useEffect(() => {
     api
       .categories()
-      .then((response) => setCategories(response.categories))
+      .then((response) =>
+        setCategories(
+          response.categories.length ? response.categories : fallbackCategories,
+        ),
+      )
       .catch(() => setCategories(fallbackCategories));
     api
       .items()
-      .then((response) => setItems(response.items))
+      .then((response) =>
+        setItems(response.items.length ? response.items : fallbackItems),
+      )
       .catch(() => setItems(fallbackItems));
   }, []);
 

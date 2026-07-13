@@ -48,6 +48,94 @@ async function ensureCategories(restaurantId: string) {
   }
 }
 
+async function ensureMenu(restaurantId: string) {
+  const desserts = await prisma.category.findUnique({
+    where: {
+      restaurantId_name: {
+        restaurantId,
+        name: "Desserts",
+      },
+    },
+  });
+  if (!desserts) return;
+
+  const items = [
+    {
+      name: "Dairy Don Hard Scoops",
+      description: "Classic Dairy Don ice cream scoops served rich and creamy.",
+      price: 89,
+      imageUrl: "/images/photos/hard-scoops-photo.png",
+    },
+    {
+      name: "Dairy Don Softies",
+      description: "Smooth vanilla soft serve with chocolate drizzle.",
+      price: 79,
+      imageUrl: "/images/photos/softies-photo.png",
+    },
+    {
+      name: "Dairy Don Sundae",
+      description: "Sundae with assorted scoops, cream, and chocolate sauce.",
+      price: 129,
+      imageUrl: "/images/photos/sundae-photo.jpg",
+    },
+    {
+      name: "Dairy Don Thickshake",
+      description: "Thick creamy shake finished with chocolate drizzle.",
+      price: 149,
+      imageUrl: "/images/photos/thickshakes-photo.png",
+    },
+    {
+      name: "Dairy Don Mastani",
+      description: "Creamy mastani dessert shake topped with ice cream.",
+      price: 159,
+      imageUrl: "/images/photos/mastani-photo.png",
+    },
+    {
+      name: "Dairy Don Chocolate Candy Bar",
+      description: "Chocolate-coated frozen candy bar with chocolate dip.",
+      price: 99,
+      imageUrl: "/images/photos/candy-photo.png",
+    },
+  ];
+
+  for (const item of items) {
+    const existing = await prisma.menuItem.findFirst({
+      where: {
+        restaurantId,
+        name: item.name,
+      },
+    });
+    const menuItem =
+      existing ??
+      (await prisma.menuItem.create({
+        data: {
+          restaurantId,
+          categoryId: desserts.id,
+          name: item.name,
+          description: item.description,
+          price: item.price,
+          imageUrl: item.imageUrl,
+          isVeg: true,
+          isAvailable: true,
+          allergens: "dairy",
+        },
+      }));
+
+    const regular = await prisma.itemVariant.findFirst({
+      where: { itemId: menuItem.id, label: "Regular" },
+    });
+    if (!regular) {
+      await prisma.itemVariant.create({
+        data: {
+          itemId: menuItem.id,
+          label: "Regular",
+          priceDelta: 0,
+        },
+      });
+    }
+  }
+}
+
 async function ensureAdmin(restaurantId: string) {
   const passwordHash = await bcrypt.hash("Admin@12345", 10);
   await prisma.user.upsert({
@@ -69,6 +157,7 @@ async function ensureAdmin(restaurantId: string) {
 async function main() {
   const restaurant = await ensureRestaurant();
   await ensureCategories(restaurant.id);
+  await ensureMenu(restaurant.id);
   await ensureAdmin(restaurant.id);
   console.log("Default production data ready: admin@food.local / Admin@12345");
 }
