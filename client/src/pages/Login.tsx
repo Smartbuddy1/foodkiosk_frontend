@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { LogIn, ShieldCheck } from "lucide-react";
+import { LogIn } from "lucide-react";
 import { api, storeAuth, type AuthUser } from "../lib/api";
 
 type LoginProps = {
@@ -33,9 +33,11 @@ export default function Login({ onLogin, title = "Staff Login" }: LoginProps) {
     <main className="min-h-screen bg-cream text-ink">
       <div className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-5">
         <div className="mb-7 flex items-center gap-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-ember text-white">
-            <ShieldCheck size={28} />
-          </div>
+          <img
+            className="h-16 w-16 rounded-full object-contain"
+            src="/images/brand/dairy-don-logo.png"
+            alt="Dairy Don"
+          />
           <div>
             <p className="text-sm uppercase tracking-[0.2em] text-steel">
               Dairy Don The Real Ice Cream
