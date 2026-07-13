@@ -1098,15 +1098,17 @@ function DashboardView({
       </div>
 
       <aside className="space-y-4">
-        <section className="rounded-[7px] bg-[#ff922b] p-4 text-white">
-          <div className="grid grid-cols-[1fr_180px] gap-4">
-            <div>
+        <section className="overflow-hidden rounded-[7px] bg-[#ff922b] p-4 text-white">
+          <div className="grid min-w-0 grid-cols-1 gap-4 min-[1180px]:grid-cols-[minmax(0,1fr)_minmax(150px,180px)]">
+            <div className="min-w-0">
               <p className="text-xs font-semibold text-white/80">
                 Total earning
               </p>
-              <div className="mt-2 flex items-start gap-2">
-                <span className="text-[28px] font-black leading-none">₹</span>
-                <p className="text-[30px] font-black leading-none">
+              <div className="mt-2 flex min-w-0 items-start gap-2">
+                <span className="shrink-0 text-[26px] font-black leading-none">
+                  ₹
+                </span>
+                <p className="min-w-0 break-words text-[clamp(24px,2.3vw,30px)] font-black leading-none">
                   {Math.round(displayTotalEarning || displayTodayRevenue).toLocaleString(
                     "en-IN",
                   )}
@@ -1119,9 +1121,9 @@ function DashboardView({
                 View More
               </button>
             </div>
-            <div className="rounded-[7px] bg-white p-3 text-center text-[#202020]">
+            <div className="min-w-0 rounded-[7px] bg-white p-3 text-center text-[#202020]">
               <p className="text-xs font-black">Total Profit</p>
-              <div className="mx-auto mt-3 h-16 w-32">
+              <div className="mx-auto mt-3 h-16 w-full max-w-32">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={salesSparkData ?? sparkline(orders, "sales")}>
                     <Line
