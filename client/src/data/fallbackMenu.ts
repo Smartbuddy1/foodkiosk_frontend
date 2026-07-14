@@ -197,9 +197,9 @@ export const fallbackItems: MenuItemDto[] = [
     restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
-    name: "Dairy Don Hard Scoops",
+    name: "Hard Scoops",
     description:
-      "Classic Dairy Don ice cream scoops served rich, creamy, and chilled.",
+      "Classic ice cream scoops served rich, creamy, and chilled.",
     price: 89,
     imageUrl: localPhoto("hard-scoops-photo.png"),
     isVeg: true,
@@ -219,7 +219,7 @@ export const fallbackItems: MenuItemDto[] = [
     restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
-    name: "Dairy Don Softies",
+    name: "Softies",
     description:
       "Smooth vanilla soft serve topped with chocolate drizzle and crunchy nuts.",
     price: 79,
@@ -241,7 +241,7 @@ export const fallbackItems: MenuItemDto[] = [
     restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
-    name: "Dairy Don Sundae",
+    name: "Sundae",
     description:
       "Banana split sundae with assorted scoops, whipped cream, and chocolate sauce.",
     price: 129,
@@ -263,7 +263,7 @@ export const fallbackItems: MenuItemDto[] = [
     restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
-    name: "Dairy Don Thickshake",
+    name: "Thickshake",
     description:
       "Thick chocolate shake blended creamy and finished with chocolate drizzle.",
     price: 149,
@@ -285,7 +285,7 @@ export const fallbackItems: MenuItemDto[] = [
     restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
-    name: "Dairy Don Mastani",
+    name: "Mastani",
     description:
       "Creamy mastani dessert shake topped with ice cream and chocolate garnish.",
     price: 159,
@@ -307,7 +307,7 @@ export const fallbackItems: MenuItemDto[] = [
     restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
-    name: "Dairy Don Sugar Less Scoops",
+    name: "Sugar Less Scoops",
     description:
       "Sugar-less chocolate ice cream scoops with a smooth, rich finish.",
     price: 109,
@@ -329,7 +329,7 @@ export const fallbackItems: MenuItemDto[] = [
     restaurantId: "1",
     categoryId: 6,
     category: fallbackCategories[5],
-    name: "Dairy Don Chocolate Candy Bar",
+    name: "Chocolate Candy Bar",
     description:
       "Chocolate-coated frozen candy bar served with a glossy chocolate dip.",
     price: 99,

@@ -35,12 +35,12 @@ export default function Login({ onLogin, title = "Staff Login" }: LoginProps) {
         <div className="mb-7 flex items-center gap-3">
           <img
             className="h-16 w-32 shrink-0 object-contain"
-            src="/images/brand/dairy-don-logo.png"
-            alt="Dairy Don"
+            src="/images/brand/aarya-innovtech-logo.png"
+            alt="Aarya Innovtech"
           />
           <div>
             <p className="text-sm uppercase tracking-[0.2em] text-steel">
-              Dairy Don The Real Ice Cream
+              Aarya Innovtech
             </p>
             <h1 className="text-4xl font-bold">{title}</h1>
           </div>

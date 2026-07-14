@@ -39,7 +39,7 @@ export default function TokenDisplay() {
       <header className="mb-8 flex items-end justify-between border-b border-white/20 pb-5">
         <div>
           <p className="text-2xl font-bold text-bun">
-            Dairy Don The Real Ice Cream
+            Aarya Innovtech
           </p>
           <h1 className="text-6xl font-bold">Ready Orders</h1>
         </div>

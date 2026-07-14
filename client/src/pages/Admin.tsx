@@ -149,19 +149,19 @@ const demoSparkOrders = [
 ];
 const demoSpecialties = [
   {
-    name: "Dairy Don Sundae",
+    name: "Sundae",
     imageUrl: "/images/photos/sundae-photo.jpg",
     quantity: 142,
     revenue: 18318,
   },
   {
-    name: "Dairy Don Thickshake",
+    name: "Thickshake",
     imageUrl: "/images/photos/thickshakes-photo.png",
     quantity: 118,
     revenue: 17582,
   },
   {
-    name: "Dairy Don Hard Scoops",
+    name: "Hard Scoops",
     imageUrl: "/images/photos/hard-scoops-photo.png",
     quantity: 205,
     revenue: 18245,
@@ -169,25 +169,25 @@ const demoSpecialties = [
 ];
 const demoTransactions = [
   {
-    name: "Dairy Don Sundae",
+    name: "Sundae",
     imageUrl: "/images/photos/sundae-photo.jpg",
     time: "12:45 PM",
     total: 258,
   },
   {
-    name: "Dairy Don Thickshake",
+    name: "Thickshake",
     imageUrl: "/images/photos/thickshakes-photo.png",
     time: "12:18 PM",
     total: 298,
   },
   {
-    name: "Dairy Don Hard Scoops",
+    name: "Hard Scoops",
     imageUrl: "/images/photos/hard-scoops-photo.png",
     time: "11:52 AM",
     total: 178,
   },
   {
-    name: "Dairy Don Mastani",
+    name: "Mastani",
     imageUrl: "/images/photos/mastani-photo.png",
     time: "11:30 AM",
     total: 318,
@@ -686,15 +686,15 @@ export default function Admin() {
           <div className="flex h-[72px] items-center gap-3 border-b border-[#eeeeee] px-5">
             <img
               className="h-12 w-24 shrink-0 object-contain"
-              src="/images/brand/dairy-don-logo.png"
-              alt="Dairy Don"
+              src="/images/brand/aarya-innovtech-logo.png"
+              alt="Aarya Innovtech"
             />
             <div className="min-w-0">
               <h1 className="text-[18px] font-black leading-5 tracking-tight text-[#202020]">
-                Dairy Don
+                Aarya Innovtech
               </h1>
               <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#8d8d8d]">
-                Real Ice Cream
+                Food Kiosk
               </p>
             </div>
           </div>
@@ -723,10 +723,10 @@ export default function Admin() {
           <div className="mx-4 mt-14 rounded-[10px] bg-[#ff922b] p-3 text-white">
             <img
               className="h-14 w-full bg-white object-contain p-1"
-              src="/images/brand/dairy-don-logo.png"
-              alt="Dairy Don"
+              src="/images/brand/aarya-innovtech-logo.png"
+              alt="Aarya Innovtech"
             />
-            <p className="mt-3 text-[13px] font-black">Dairy Don Admin</p>
+            <p className="mt-3 text-[13px] font-black">Aarya Innovtech Admin</p>
             <p className="mt-1 text-[10px] font-medium leading-4 text-white/85">
               Manage products, orders, offers, and staff from one dashboard.
             </p>

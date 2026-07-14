@@ -207,9 +207,9 @@ async function main() {
     },
     {
       categoryId: categoryMap["Desserts"],
-      name: "Dairy Don Hard Scoops",
+      name: "Hard Scoops",
       description:
-        "Classic Dairy Don ice cream scoops served rich, creamy, and chilled.",
+        "Classic ice cream scoops served rich, creamy, and chilled.",
       price: 89,
       imageUrl: localPhoto("hard-scoops-photo.png"),
       isVeg: true,
@@ -217,7 +217,7 @@ async function main() {
     },
     {
       categoryId: categoryMap["Desserts"],
-      name: "Dairy Don Softies",
+      name: "Softies",
       description:
         "Smooth vanilla soft serve topped with chocolate drizzle and crunchy nuts.",
       price: 79,
@@ -227,7 +227,7 @@ async function main() {
     },
     {
       categoryId: categoryMap["Desserts"],
-      name: "Dairy Don Sundae",
+      name: "Sundae",
       description:
         "Banana split sundae with assorted scoops, whipped cream, and chocolate sauce.",
       price: 129,
@@ -237,7 +237,7 @@ async function main() {
     },
     {
       categoryId: categoryMap["Desserts"],
-      name: "Dairy Don Thickshake",
+      name: "Thickshake",
       description:
         "Thick chocolate shake blended creamy and finished with chocolate drizzle.",
       price: 149,
@@ -247,7 +247,7 @@ async function main() {
     },
     {
       categoryId: categoryMap["Desserts"],
-      name: "Dairy Don Mastani",
+      name: "Mastani",
       description:
         "Creamy mastani dessert shake topped with ice cream and chocolate garnish.",
       price: 159,
@@ -257,7 +257,7 @@ async function main() {
     },
     {
       categoryId: categoryMap["Desserts"],
-      name: "Dairy Don Sugar Less Scoops",
+      name: "Sugar Less Scoops",
       description:
         "Sugar-less chocolate ice cream scoops with a smooth, rich finish.",
       price: 109,
@@ -267,7 +267,7 @@ async function main() {
     },
     {
       categoryId: categoryMap["Desserts"],
-      name: "Dairy Don Chocolate Candy Bar",
+      name: "Chocolate Candy Bar",
       description:
         "Chocolate-coated frozen candy bar served with a glossy chocolate dip.",
       price: 99,
@@ -310,10 +310,7 @@ async function main() {
       });
     }
 
-    if (
-      item.categoryId === categoryMap["Desserts"] &&
-      item.name.startsWith("Dairy Don ")
-    ) {
+    if (item.categoryId === categoryMap["Desserts"]) {
       await prisma.itemVariant.createMany({
         data: [
           { itemId: createdItem.id, label: "Regular", priceDelta: 0 },

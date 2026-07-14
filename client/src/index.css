@@ -53,13 +53,11 @@ button {
   scrollbar-color: #c9b28d transparent;
 }
 
-.dairy-don-hero-title {
+.brand-hero-title {
   color: #ffd11a;
-  font-family:
-    "Edwardian Script ITC", "Brush Script MT", "Segoe Script",
-    "Lucida Handwriting", cursive;
-  font-weight: 400;
-  letter-spacing: 0.01em;
+  font-family: Cambria, Georgia, "Times New Roman", serif;
+  font-weight: 800;
+  letter-spacing: 0;
   text-shadow:
     0 5px 18px rgba(0, 0, 0, 0.78),
     0 0 10px rgba(255, 209, 26, 0.2);

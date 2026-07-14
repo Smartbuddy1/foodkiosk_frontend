@@ -4,13 +4,13 @@ import { prisma } from "../config/prisma.js";
 
 async function ensureRestaurant() {
   const existing = await prisma.restaurant.findFirst({
-    where: { name: "Dairy Don The Real Ice Cream" },
+    where: { name: "Aarya Innovtech" },
   });
   if (existing) return existing;
 
   return prisma.restaurant.create({
     data: {
-      name: "Dairy Don The Real Ice Cream",
+      name: "Aarya Innovtech",
       isActive: true,
     },
   });
@@ -61,37 +61,37 @@ async function ensureMenu(restaurantId: string) {
 
   const items = [
     {
-      name: "Dairy Don Hard Scoops",
-      description: "Classic Dairy Don ice cream scoops served rich and creamy.",
+      name: "Hard Scoops",
+      description: "Classic ice cream scoops served rich and creamy.",
       price: 89,
       imageUrl: "/images/photos/hard-scoops-photo.png",
     },
     {
-      name: "Dairy Don Softies",
+      name: "Softies",
       description: "Smooth vanilla soft serve with chocolate drizzle.",
       price: 79,
       imageUrl: "/images/photos/softies-photo.png",
     },
     {
-      name: "Dairy Don Sundae",
+      name: "Sundae",
       description: "Sundae with assorted scoops, cream, and chocolate sauce.",
       price: 129,
       imageUrl: "/images/photos/sundae-photo.jpg",
     },
     {
-      name: "Dairy Don Thickshake",
+      name: "Thickshake",
       description: "Thick creamy shake finished with chocolate drizzle.",
       price: 149,
       imageUrl: "/images/photos/thickshakes-photo.png",
     },
     {
-      name: "Dairy Don Mastani",
+      name: "Mastani",
       description: "Creamy mastani dessert shake topped with ice cream.",
       price: 159,
       imageUrl: "/images/photos/mastani-photo.png",
     },
     {
-      name: "Dairy Don Chocolate Candy Bar",
+      name: "Chocolate Candy Bar",
       description: "Chocolate-coated frozen candy bar with chocolate dip.",
       price: 99,
       imageUrl: "/images/photos/candy-photo.png",

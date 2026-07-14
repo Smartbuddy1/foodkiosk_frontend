@@ -62,9 +62,9 @@ const dessertFlavors = [
 ];
 const upiQrImage =
   import.meta.env.VITE_UPI_QR_IMAGE_URL ??
-  "/images/payment/dairy-don-upi-qr.png";
+  "/images/payment/aarya-innovtech-upi-qr.png";
 const upiPayeeName =
-  import.meta.env.VITE_UPI_PAYEE_NAME ?? "Dairy Don The Real Ice Cream";
+  import.meta.env.VITE_UPI_PAYEE_NAME ?? "Aarya Innovtech";
 const t = (text: string) => getTranslation("English", text);
 
 function makeId() {
@@ -684,16 +684,16 @@ export default function Kiosk() {
           <img
             className="absolute inset-0 h-full w-full object-cover opacity-55"
             src="/images/photos/sundae-photo.jpg"
-            alt="Dairy Don Sundae"
+            alt="Sundae"
           />
           <div className="relative mx-auto w-full max-w-4xl px-6 text-center">
             <img
               className="mx-auto mb-6 h-36 w-full max-w-[420px] object-contain drop-shadow-[0_20px_38px_rgba(0,0,0,0.5)] sm:mb-8 sm:h-44 sm:max-w-[560px]"
-              src="/images/brand/dairy-don-logo.png"
-              alt="Dairy Don"
+              src="/images/brand/aarya-innovtech-logo.png"
+              alt="Aarya Innovtech"
             />
-            <h1 className="dairy-don-hero-title mx-auto max-w-5xl text-5xl leading-[0.92] sm:text-7xl md:text-[96px]">
-              Dairy Don The Real Ice Cream
+            <h1 className="brand-hero-title mx-auto max-w-5xl text-5xl leading-[0.92] sm:text-7xl md:text-[96px]">
+              Food Kiosk
             </h1>
             <button
               className="mt-8 rounded-md bg-bun px-8 py-4 text-2xl sm:mt-12 sm:px-12 sm:py-5 sm:text-3xl font-bold text-ink shadow-kiosk"
