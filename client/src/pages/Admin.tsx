@@ -685,7 +685,7 @@ export default function Admin() {
         <aside className="hidden h-full w-[220px] shrink-0 overflow-y-auto bg-white lg:block">
           <div className="flex h-[72px] items-center gap-3 border-b border-[#eeeeee] px-5">
             <img
-              className="h-12 w-12 shrink-0 rounded-full object-contain"
+              className="h-12 w-24 shrink-0 object-contain"
               src="/images/brand/dairy-don-logo.png"
               alt="Dairy Don"
             />
@@ -722,7 +722,7 @@ export default function Admin() {
 
           <div className="mx-4 mt-14 rounded-[10px] bg-[#ff922b] p-3 text-white">
             <img
-              className="h-14 w-14 rounded-full bg-white object-contain p-1"
+              className="h-14 w-full bg-white object-contain p-1"
               src="/images/brand/dairy-don-logo.png"
               alt="Dairy Don"
             />

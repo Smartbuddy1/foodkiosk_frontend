@@ -34,7 +34,7 @@ export default function Login({ onLogin, title = "Staff Login" }: LoginProps) {
       <div className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-5">
         <div className="mb-7 flex items-center gap-3">
           <img
-            className="h-16 w-16 rounded-full object-contain"
+            className="h-16 w-32 shrink-0 object-contain"
             src="/images/brand/dairy-don-logo.png"
             alt="Dairy Don"
           />

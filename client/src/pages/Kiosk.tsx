@@ -688,7 +688,7 @@ export default function Kiosk() {
           />
           <div className="relative mx-auto w-full max-w-4xl px-6 text-center">
             <img
-              className="mx-auto mb-6 h-44 w-44 object-contain drop-shadow-[0_20px_38px_rgba(0,0,0,0.5)] sm:mb-8 sm:h-56 sm:w-56"
+              className="mx-auto mb-6 h-36 w-full max-w-[420px] object-contain drop-shadow-[0_20px_38px_rgba(0,0,0,0.5)] sm:mb-8 sm:h-44 sm:max-w-[560px]"
               src="/images/brand/dairy-don-logo.png"
               alt="Dairy Don"
             />
