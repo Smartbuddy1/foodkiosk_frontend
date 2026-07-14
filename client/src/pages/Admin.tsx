@@ -82,6 +82,7 @@ const fallbackImage =
   "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=300&q=80";
 const defaultProductImage =
   "https://images.unsplash.com/photo-1488900128323-21503983a07e?auto=format&fit=crop&w=900&q=80";
+const adminLogo = "/images/brand/aarya-innovtech-logo.png";
 const months = [
   "Jan",
   "Feb",
@@ -685,16 +686,16 @@ export default function Admin() {
         <aside className="hidden h-full w-[220px] shrink-0 overflow-y-auto bg-white lg:block">
           <div className="flex h-[72px] items-center gap-3 border-b border-[#eeeeee] px-5">
             <img
-              className="h-12 w-12 shrink-0 rounded-full object-contain"
-              src="/images/brand/dairy-don-logo.png"
-              alt="Dairy Don"
+              className="h-12 w-12 shrink-0 object-contain"
+              src={adminLogo}
+              alt="Aarya Innovtech"
             />
             <div className="min-w-0">
               <h1 className="text-[18px] font-black leading-5 tracking-tight text-[#202020]">
-                Dairy Don
+                Aarya Innovtech
               </h1>
               <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#8d8d8d]">
-                Real Ice Cream
+                Pvt. Ltd.
               </p>
             </div>
           </div>
@@ -722,11 +723,11 @@ export default function Admin() {
 
           <div className="mx-4 mt-14 rounded-[10px] bg-[#ff922b] p-3 text-white">
             <img
-              className="h-14 w-14 rounded-full bg-white object-contain p-1"
-              src="/images/brand/dairy-don-logo.png"
-              alt="Dairy Don"
+              className="h-14 w-14 bg-white object-contain p-1"
+              src={adminLogo}
+              alt="Aarya Innovtech"
             />
-            <p className="mt-3 text-[13px] font-black">Dairy Don Admin</p>
+            <p className="mt-3 text-[13px] font-black">Aarya Innovtech Admin</p>
             <p className="mt-1 text-[10px] font-medium leading-4 text-white/85">
               Manage products, orders, offers, and staff from one dashboard.
             </p>
