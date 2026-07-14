@@ -79,8 +79,47 @@ function getLineUnitPrice(line: CartLine) {
   );
 }
 
+function cartLineKey(line: CartLine) {
+  return [
+    line.item.id,
+    line.variantId ?? "",
+    line.addons.map((addon) => addon.id).sort((a, b) => a - b).join(","),
+    line.flavor ?? "",
+    [...line.removeIngredients].sort().join(","),
+    line.spiceLevel,
+    line.specialInstructions?.trim() ?? "",
+  ].join("|");
+}
+
 function cartQuantity(cart: CartLine[]) {
   return cart.reduce((sum, line) => sum + line.quantity, 0);
+}
+
+function cartItemCount(cart: CartLine[]) {
+  return new Set(cart.map((line) => line.item.id)).size;
+}
+
+function groupedCart(cart: CartLine[]) {
+  const groups: Array<{ item: MenuItemDto; lines: CartLine[] }> = [];
+  for (const line of cart) {
+    const group = groups.find((candidate) => candidate.item.id === line.item.id);
+    if (group) group.lines.push(line);
+    else groups.push({ item: line.item, lines: [line] });
+  }
+  return groups;
+}
+
+function lineOptionText(line: CartLine) {
+  const options = [
+    line.variantLabel ?? "Regular",
+    ...line.addons.map((addon) => addon.label),
+    line.flavor ? `Flavor: ${line.flavor}` : "",
+    line.removeIngredients.length
+      ? `Remove ${line.removeIngredients.join(", ")}`
+      : "",
+    line.spiceLevel !== "medium" ? `Spice: ${line.spiceLevel}` : "",
+  ].filter(Boolean);
+  return options.length ? options : ["Regular"];
 }
 
 function buildInstructions(line: CartLine) {
@@ -416,7 +455,6 @@ function CartDrawer({
   onClose,
   onQuantity,
   onRemove,
-  onInstructions,
   onReview,
 }: {
   open: boolean;
@@ -424,7 +462,6 @@ function CartDrawer({
   onClose: () => void;
   onQuantity: (lineId: string, quantity: number) => void;
   onRemove: (lineId: string) => void;
-  onInstructions: (lineId: string, value: string) => void;
   onReview: () => void;
 }) {
   if (!open) return null;
@@ -442,71 +479,85 @@ function CartDrawer({
         </div>
 
         <div className="space-y-3">
-          {cart.map((line) => (
+          {groupedCart(cart).map((group) => (
             <article
-              key={line.lineId}
+              key={group.item.id}
               className="rounded-lg border border-amber-200 p-3"
             >
               <div className="flex gap-3">
                 <img
                   className="h-24 w-24 rounded-md object-cover"
-                  src={line.item.imageUrl}
-                  alt={line.item.name}
+                  src={group.item.imageUrl}
+                  alt={group.item.name}
                 />
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-xl font-bold">{line.item.name}</h3>
-                  <p className="text-sm text-steel">
-                    {line.variantLabel ?? "Regular"}{" "}
-                    {line.addons.length
-                      ? `+ ${line.addons.map((a) => a.label).join(", ")}`
-                      : ""}
-                  </p>
-                  {line.flavor && (
-                    <p className="text-sm font-bold text-ember">
-                      Flavor: {line.flavor}
-                    </p>
-                  )}
+                  <h3 className="text-xl font-bold">{group.item.name}</h3>
                   <p className="font-bold">
-                    {formatRupees(getLineUnitPrice(line) * line.quantity)}
+                    {formatRupees(
+                      group.lines.reduce(
+                        (sum, line) =>
+                          sum + getLineUnitPrice(line) * line.quantity,
+                        0,
+                      ),
+                    )}
                   </p>
                 </div>
-                <button
-                  className="rounded-md border border-red-200 px-3 text-red-700"
-                  onClick={() => onRemove(line.lineId)}
-                >
-                  <Trash2 size={20} />
-                </button>
               </div>
 
-              <div className="mt-3 flex items-center gap-2">
-                <button
-                  className="rounded-md border border-amber-200 px-4"
-                  onClick={() =>
-                    onQuantity(line.lineId, Math.max(1, line.quantity - 1))
-                  }
-                >
-                  <Minus size={20} />
-                </button>
-                <span className="w-10 text-center text-xl font-bold">
-                  {line.quantity}
-                </span>
-                <button
-                  className="rounded-md border border-amber-200 px-4"
-                  onClick={() => onQuantity(line.lineId, line.quantity + 1)}
-                >
-                  <Plus size={20} />
-                </button>
+              <div className="mt-3 divide-y divide-amber-100 rounded-md border border-amber-100 bg-amber-50/30">
+                {group.lines.map((line) => (
+                  <div
+                    key={line.lineId}
+                    className="grid gap-3 p-3 sm:grid-cols-[1fr_auto_auto] sm:items-center"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap gap-1.5">
+                        {lineOptionText(line).map((option) => (
+                          <span
+                            key={option}
+                            className="rounded-full bg-white px-2 py-1 text-xs font-bold text-steel ring-1 ring-amber-100"
+                          >
+                            {option}
+                          </span>
+                        ))}
+                      </div>
+                      <p className="mt-1 font-bold">
+                        {formatRupees(getLineUnitPrice(line) * line.quantity)}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="h-10 w-10 rounded-md border border-amber-200 bg-white"
+                        onClick={() =>
+                          onQuantity(
+                            line.lineId,
+                            Math.max(1, line.quantity - 1),
+                          )
+                        }
+                      >
+                        <Minus size={18} className="mx-auto" />
+                      </button>
+                      <span className="w-8 text-center text-lg font-bold">
+                        {line.quantity}
+                      </span>
+                      <button
+                        className="h-10 w-10 rounded-md border border-amber-200 bg-white"
+                        onClick={() =>
+                          onQuantity(line.lineId, line.quantity + 1)
+                        }
+                      >
+                        <Plus size={18} className="mx-auto" />
+                      </button>
+                    </div>
+                      <button
+                        className="h-10 w-10 rounded-md border border-red-200 text-red-700"
+                        onClick={() => onRemove(line.lineId)}
+                      >
+                        <Trash2 size={18} className="mx-auto" />
+                      </button>
+                  </div>
+                ))}
               </div>
-
-              <textarea
-                className="mt-3 min-h-20 w-full rounded-md border border-amber-200 p-3 outline-none focus:border-ember"
-                placeholder="Special instructions"
-                value={line.specialInstructions ?? ""}
-                onChange={(event) =>
-                  onInstructions(line.lineId, event.target.value)
-                }
-                maxLength={160}
-              />
             </article>
           ))}
         </div>
@@ -517,7 +568,7 @@ function CartDrawer({
           onClick={onReview}
         >
           <Check size={24} />
-          Review Order
+          Checkout
         </button>
       </aside>
     </div>
@@ -630,22 +681,24 @@ export default function Kiosk() {
   );
 
   function addLine(line: CartLine) {
-    setCart((current) => [...current, line]);
-    setToast("Added to cart");
+    setCart((current) => {
+      const nextLineKey = cartLineKey(line);
+      const existingLine = current.find(
+        (candidate) => cartLineKey(candidate) === nextLineKey,
+      );
+      if (!existingLine) return [...current, line];
+      return current.map((candidate) =>
+        candidate.lineId === existingLine.lineId
+          ? { ...candidate, quantity: candidate.quantity + line.quantity }
+          : candidate,
+      );
+    });
   }
 
   function updateQuantity(lineId: string, quantity: number) {
     setCart((current) =>
       current.map((line) =>
         line.lineId === lineId ? { ...line, quantity } : line,
-      ),
-    );
-  }
-
-  function updateInstructions(lineId: string, value: string) {
-    setCart((current) =>
-      current.map((line) =>
-        line.lineId === lineId ? { ...line, specialInstructions: value } : line,
       ),
     );
   }
@@ -795,22 +848,41 @@ export default function Kiosk() {
                   />
                 </div>
               </div>
-              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-soft">
-                <button
-                  className={`shrink-0 rounded-md px-5 font-bold ${activeCategory === "all" ? "bg-ink text-white" : "bg-white text-ink"}`}
-                  onClick={() => setActiveCategory("all")}
-                >
-                  All
-                </button>
-                {categories.map((category) => (
+              <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
+                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-soft">
                   <button
-                    key={category.id}
-                    className={`shrink-0 rounded-md px-5 font-bold ${activeCategory === category.id ? "bg-ink text-white" : "bg-white text-ink"}`}
-                    onClick={() => setActiveCategory(category.id)}
+                    className={`shrink-0 rounded-md px-5 font-bold ${activeCategory === "all" ? "bg-ink text-white" : "bg-white text-ink"}`}
+                    onClick={() => setActiveCategory("all")}
                   >
-                    {category.name}
+                    All
                   </button>
-                ))}
+                  {categories.map((category) => (
+                    <button
+                      key={category.id}
+                      className={`shrink-0 rounded-md px-5 font-bold ${activeCategory === category.id ? "bg-ink text-white" : "bg-white text-ink"}`}
+                      onClick={() => setActiveCategory(category.id)}
+                    >
+                      {category.name}
+                    </button>
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 gap-2 sm:flex">
+                  <button
+                    className="rounded-md border border-amber-200 bg-white px-4 py-3 font-bold sm:px-5"
+                    onClick={() => setStep("orderType")}
+                  >
+                    {t("Back")}
+                  </button>
+                  <button
+                    className="flex items-center justify-center gap-2 rounded-md bg-ink px-4 py-3 font-bold text-white sm:px-5"
+                    onClick={() => setCartOpen(true)}
+                  >
+                    <ShoppingCart size={20} />
+                    <span>
+                      {t("Cart")} ({cartItemCount(cart)})
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </header>
@@ -854,30 +926,6 @@ export default function Kiosk() {
             ))}
           </div>
 
-          <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-amber-200 bg-white p-4 shadow-kiosk">
-            <div className="mx-auto flex max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-lg sm:text-xl font-bold">
-                {cartQuantity(cart)} {t("items")}{" "}
-                <span className="text-steel">|</span>{" "}
-                {formatRupees(totals.total)}
-              </div>
-              <div className="flex gap-2">
-                <button
-                  className="flex-1 rounded-md border border-amber-200 px-4 py-2 sm:flex-none sm:px-5 font-bold"
-                  onClick={() => setStep("orderType")}
-                >
-                  {t("Back")}
-                </button>
-                <button
-                  className="flex flex-1 items-center justify-center gap-2 rounded-md bg-ink px-4 py-2 sm:flex-none sm:px-5 font-bold text-white"
-                  onClick={() => setCartOpen(true)}
-                >
-                  <ShoppingCart size={20} />
-                  {t("Cart")}
-                </button>
-              </div>
-            </div>
-          </div>
         </section>
       )}
 
@@ -1112,10 +1160,9 @@ export default function Kiosk() {
         onRemove={(lineId) =>
           setCart((current) => current.filter((line) => line.lineId !== lineId))
         }
-        onInstructions={updateInstructions}
         onReview={() => {
           setCartOpen(false);
-          if (cart.length) setStep("review");
+          if (cart.length) setStep("payment");
         }}
       />
     </main>

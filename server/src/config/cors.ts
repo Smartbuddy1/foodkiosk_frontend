@@ -11,11 +11,17 @@ const allowedOrigins = new Set([
 
 const localDevOriginPattern =
   /^https?:\/\/(?:localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/;
+const privateNetworkDevOriginPattern =
+  /^https?:\/\/(?:(?:10|127)\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(?:1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3})(?::\d+)?$/;
 
 export function isAllowedCorsOrigin(origin?: string) {
   if (!origin) return true;
   if (allowedOrigins.has(origin)) return true;
-  return !isProduction && localDevOriginPattern.test(origin);
+  return (
+    !isProduction &&
+    (localDevOriginPattern.test(origin) ||
+      privateNetworkDevOriginPattern.test(origin))
+  );
 }
 
 export function corsOrigin(

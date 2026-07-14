@@ -12,12 +12,18 @@ import type {
 const localApiUrl = "http://localhost:4000/api";
 const localSocketUrl = "http://localhost:4000";
 
+function localBackendUrl(path = "") {
+  if (typeof window === "undefined") return `http://localhost:4000${path}`;
+  const host = window.location.hostname || "localhost";
+  return `http://${host}:4000${path}`;
+}
+
 export const API_URL =
   import.meta.env.VITE_API_URL ??
-  (import.meta.env.PROD ? "/api" : localApiUrl);
+  (import.meta.env.PROD ? "/api" : localBackendUrl("/api"));
 export const SOCKET_URL =
   import.meta.env.VITE_SOCKET_URL ??
-  (import.meta.env.PROD ? window.location.origin : localSocketUrl);
+  (import.meta.env.PROD ? window.location.origin : localBackendUrl());
 
 export type AuthUser = {
   id: number;
