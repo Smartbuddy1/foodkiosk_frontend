@@ -736,8 +736,8 @@ export default function Kiosk() {
         <section className="page-transition relative flex min-h-screen items-center justify-center overflow-hidden bg-ink text-white">
           <img
             className="absolute inset-0 h-full w-full object-cover opacity-55"
-            src="/images/photos/sundae-photo.jpg"
-            alt="Sundae"
+            src="/images/photos/latte-art-coffee.jpg"
+            alt="Latte art coffee"
           />
           <div className="relative mx-auto w-full max-w-4xl px-6 text-center">
             <img
@@ -749,7 +749,7 @@ export default function Kiosk() {
               Food Kiosk
             </h1>
             <button
-              className="mt-8 rounded-md bg-bun px-8 py-4 text-2xl sm:mt-12 sm:px-12 sm:py-5 sm:text-3xl font-bold text-ink shadow-kiosk"
+              className="kiosk-start-button mt-8 rounded-md bg-bun px-8 py-4 text-2xl sm:mt-12 sm:px-12 sm:py-5 sm:text-3xl text-ink shadow-kiosk"
               onClick={() => setStep("language")}
             >
               {t("Tap to Start")}

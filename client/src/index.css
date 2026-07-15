@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,700..900,65,0&family=Noto+Sans+Devanagari:wght@600;700;800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -55,12 +57,19 @@ button {
 
 .brand-hero-title {
   color: #ffd11a;
-  font-family: Cambria, Georgia, "Times New Roman", serif;
-  font-weight: 800;
+  font-family: "Fraunces", Cambria, Georgia, serif;
+  font-variation-settings: "SOFT" 65, "WONK" 0;
+  font-weight: 900;
   letter-spacing: 0;
   text-shadow:
-    0 5px 18px rgba(0, 0, 0, 0.78),
-    0 0 10px rgba(255, 209, 26, 0.2);
+    0 6px 20px rgba(0, 0, 0, 0.76),
+    0 1px 0 rgba(255, 250, 214, 0.5),
+    0 0 12px rgba(255, 209, 26, 0.16);
+}
+
+.kiosk-start-button {
+  font-family: "Noto Sans Devanagari", Cambria, Georgia, serif;
+  font-weight: 800;
 }
 
 .payment-success-ring {
