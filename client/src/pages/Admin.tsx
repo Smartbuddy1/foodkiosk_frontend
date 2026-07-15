@@ -160,12 +160,6 @@ const demoSpecialties = [
     quantity: 118,
     revenue: 17582,
   },
-  {
-    name: "Hard Scoops",
-    imageUrl: "/images/photos/hard-scoops-photo.png",
-    quantity: 205,
-    revenue: 18245,
-  },
 ];
 const demoTransactions = [
   {
@@ -179,12 +173,6 @@ const demoTransactions = [
     imageUrl: "/images/photos/thickshakes-photo.png",
     time: "12:18 PM",
     total: 298,
-  },
-  {
-    name: "Hard Scoops",
-    imageUrl: "/images/photos/hard-scoops-photo.png",
-    time: "11:52 AM",
-    total: 178,
   },
   {
     name: "Mastani",

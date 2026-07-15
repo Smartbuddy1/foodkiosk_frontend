@@ -193,28 +193,6 @@ export const fallbackItems: MenuItemDto[] = [
     ],
   },
   {
-    id: 9,
-    restaurantId: "1",
-    categoryId: 6,
-    category: fallbackCategories[5],
-    name: "Hard Scoops",
-    description:
-      "Classic ice cream scoops served rich, creamy, and chilled.",
-    price: 89,
-    imageUrl: localPhoto("hard-scoops-photo.png"),
-    isVeg: true,
-    isAvailable: true,
-    allergens: ["dairy"],
-    variants: [
-      { id: 21, label: "Regular", priceDelta: 0 },
-      { id: 22, label: "Large", priceDelta: 35 },
-    ],
-    addons: [
-      { id: 16, label: "Chocolate Sauce", price: 20, isDefault: false },
-      { id: 17, label: "Waffle Cone", price: 20, isDefault: false },
-    ],
-  },
-  {
     id: 10,
     restaurantId: "1",
     categoryId: 6,
